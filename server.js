@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const app = express();
 const path = require('path');
 const PORT = 3000;
+require('dotenv').config();
 
 
 app.use('/public', express.static(path.join(__dirname, '../public')));
