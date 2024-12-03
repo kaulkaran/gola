@@ -2,9 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const app = express();
+const cors = require('cors');
 const path = require('path');
 const PORT = 3000;
-const cors = require('cors');
+
 
 require('dotenv').config();
 
@@ -12,9 +13,8 @@ require('dotenv').config();
 
 
 app.use(cors({
-    origin: 'https://karanbookstore.netlify.app', // Replace with your actual frontend URL
+    origin: ['https://karanbookstore.netlify.app', '*'], // Replace with your actual frontend URL
     methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
   }));
 
 
