@@ -1,35 +1,33 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
-const app = express();
 const cors = require('cors');
 const path = require('path');
-const PORT = 3000;
+const dotenv = require('dotenv');
 
+dotenv.config();
 
-require('dotenv').config();
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors({
     origin: 'https://karanbookstore.netlify.app', // Replace with your actual frontend URL
-    methods: ['GET', 'POST', 'OPTIONS'], // Allow these HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
-  }));
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-
-
-
-
+// Serve static files from the "public" directory
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
+// Middleware for parsing JSON bodies
 app.use(bodyParser.json());
 
-const SECRET_KEY = process.env.RAZORPAY_SECRET;
-
+// Endpoint for verifying payment
 app.post('/verify-payment', (req, res) => {
-    const secret = SECRET_KEY; // Replace with your Razorpay secret
     const { payment_id, order_id, signature } = req.body;
+    const secret = process.env.RAZORPAY_SECRET; // Ensure this is set in your .env file
 
-    // Construct the string to be verified
+    // Generate the HMAC signature
     const hmac = crypto.createHmac('sha256', secret);
     const generated_signature = hmac.update(`${order_id}|${payment_id}`).digest('hex');
 
@@ -42,6 +40,7 @@ app.post('/verify-payment', (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
