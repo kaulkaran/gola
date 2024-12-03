@@ -4,6 +4,8 @@ const crypto = require('crypto');
 const app = express();
 const path = require('path');
 const PORT = 3000;
+const cors = require('cors');
+
 require('dotenv').config();
 
 
