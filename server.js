@@ -9,13 +9,14 @@ const PORT = 3000;
 
 require('dotenv').config();
 
-
-
-
 app.use(cors({
-    origin: ['https://karanbookstore.netlify.app', '*'], // Replace with your actual frontend URL
-    methods: ['GET', 'POST'],
+    origin: 'https://karanbookstore.netlify.app', // Replace with your actual frontend URL
+    methods: ['GET', 'POST', 'OPTIONS'], // Allow these HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
   }));
+
+
+
 
 
 app.use('/public', express.static(path.join(__dirname, '../public')));
